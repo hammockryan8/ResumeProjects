@@ -1,0 +1,309 @@
+package poly;
+
+import java.io.IOException;
+import java.util.Scanner;
+
+/**
+ * This class implements evaluate, add and multiply for polynomials.
+ * 
+ * @author runb-cs112
+ *
+ */
+public class Polynomial {
+	
+	/**
+	 * Reads a polynomial from an input stream (file or keyboard). The storage format
+	 * of the polynomial is:
+	 * <pre>
+	 *     <coeff> <degree>
+	 *     <coeff> <degree>
+	 *     ...
+	 *     <coeff> <degree>
+	 * </pre>
+	 * with the guarantee that degrees will be in descending order. For example:
+	 * <pre>
+	 *      4 5
+	 *     -2 3
+	 *      2 1
+	 *      3 0
+	 * </pre>
+	 * which represents the polynomial:
+	 * <pre>
+	 *      4*x^5 - 2*x^3 + 2*x + 3 
+	 * </pre>
+	 * 
+	 * @param sc Scanner from which a polynomial is to be read
+	 * @throws IOException If there is any input error in reading the polynomial
+	 * @return The polynomial linked list (front node) constructed from coefficients and
+	 *         degrees read from scanner
+	 */
+	public static Node read(Scanner sc) 
+	throws IOException {
+		Node poly = null;
+		while (sc.hasNextLine()) {
+			Scanner scLine = new Scanner(sc.nextLine());
+			poly = new Node(scLine.nextFloat(), scLine.nextInt(), poly);
+			scLine.close();
+		}
+		return poly;
+	}
+	
+	/**
+	 * Returns the sum of two polynomials - DOES NOT change either of the input polynomials.
+	 * The returned polynomial MUST have all new nodes. In other words, none of the nodes
+	 * of the input polynomials can be in the result.
+	 * 
+	 * @param poly1 First input polynomial (front of polynomial linked list)
+	 * @param poly2 Second input polynomial (front of polynomial linked list
+	 * @return A new polynomial which is the sum of the input polynomials - the returned node
+	 *         is the front of the result polynomial
+	 */
+	public static Node add(Node poly1, Node poly2) {
+		Node L = poly1;
+		Node M = poly2;
+		Node Y = L;
+		Node Z = M;
+		Node Sum = null;
+		if(L == null) {
+			while(M != null) {
+				Sum = new Node(M.term.coeff, M.term.degree, Sum);
+				M = M.next;
+			}
+			Sum = Polynomial.reverse(Sum);
+			return Sum;
+		}
+		if(M == null) {
+			while(L != null) {
+				Sum = new Node(L.term.coeff, L.term.degree, Sum);
+				L = L.next;
+			}
+			Sum = Polynomial.reverse(Sum);
+			return Sum;
+		}
+		int largestDegreeOfL = L.term.degree;
+		int largestDegreeOfM = M.term.degree;
+		int max;
+		while(L != null) {
+			if(L.term.degree > largestDegreeOfL) {
+				largestDegreeOfL = L.term.degree;
+			}
+			L = L.next;
+		}
+		L = Y;
+		while(M != null) {
+			if(M.term.degree > largestDegreeOfM) {
+				largestDegreeOfM = M.term.degree;
+			}
+			M = M.next;
+		}
+		M = Z;
+		if(largestDegreeOfL > largestDegreeOfM) {
+			max = largestDegreeOfL;
+		}
+		else {
+			max = largestDegreeOfM;
+		}
+		for(int i = 0; i <= max; i++) {
+			boolean degreeLTrue = Polynomial.search(L, i);
+			boolean degreeMTrue = Polynomial.search(M, i);
+			if(degreeLTrue == true && degreeMTrue == true) {
+				float coeffOfL = Polynomial.searchCoeff(L, i);
+				float coeffOfM = Polynomial.searchCoeff(M, i);
+				float newCoeffTerm = coeffOfL + coeffOfM;
+				if(newCoeffTerm != 0) {
+					Sum = new Node(newCoeffTerm, i, Sum);
+				}
+			}
+			else if(degreeLTrue == true && degreeMTrue == false) {
+				float coeffOfL = Polynomial.searchCoeff(L, i);
+				Sum = new Node(coeffOfL, i, Sum);
+			}
+			else if(degreeLTrue == false && degreeMTrue == true) {
+				float coeffOfM = Polynomial.searchCoeff(M, i);
+				Sum = new Node(coeffOfM, i, Sum);
+			}
+		}
+		Node J = Sum;
+		float testCase = 0;
+		while(Sum != null) {
+			testCase = testCase + Sum.term.coeff;
+			Sum = Sum.next;
+		}
+		if(testCase == 0) {
+			Node F = null;
+			return F;
+		}
+		Sum = J;
+		Sum = Polynomial.reverse(Sum);
+		return Sum;
+	}
+	
+	/**
+	 * Returns the product of two polynomials - DOES NOT change either of the input polynomials.
+	 * The returned polynomial MUST have all new nodes. In other words, none of the nodes
+	 * of the input polynomials can be in the result.
+	 * 
+	 * @param poly1 First input polynomial (front of polynomial linked list)
+	 * @param poly2 Second input polynomial (front of polynomial linked list)
+	 * @return A new polynomial which is the product of the input polynomials - the returned node
+	 *         is the front of the result polynomial
+	 */
+	public static Node multiply(Node poly1, Node poly2) {
+		Node firstProduct = null;
+		Node L = poly2;
+		if(L == null || poly1 == null) {
+			Node P = null;
+			return P;
+		}
+		while(poly1 != null) {
+			while(poly2 != null){
+				float coeff = poly1.term.coeff * poly2.term.coeff;
+				int degree = poly1.term.degree + poly2.term.degree;
+				firstProduct = new Node(coeff, degree, firstProduct);
+				poly2 = poly2.next;
+			}
+			poly2 = L;
+			poly1 = poly1.next;
+		}
+		Node X = firstProduct;
+		int largestDegreeOfPoly = firstProduct.term.degree;
+		while(firstProduct != null) {
+			if(firstProduct.term.degree > largestDegreeOfPoly) {
+				largestDegreeOfPoly = firstProduct.term.degree;
+			}
+			firstProduct = firstProduct.next;
+		}
+		firstProduct = X;
+		Node lastProduct = null;
+		for(int i = 0; i <= largestDegreeOfPoly; i++) {
+			if(Polynomial.search(firstProduct, i) == true) {
+				float newCoeff = Polynomial.searchCoeffs(firstProduct, i);
+				lastProduct = new Node(newCoeff, i, lastProduct);
+			}
+		}
+		Node J = lastProduct;
+		float testCase = 0;
+		while(lastProduct != null) {
+			testCase = testCase + lastProduct.term.coeff;
+			lastProduct = lastProduct.next;
+		}
+		lastProduct = J;
+		if(testCase == 0) {
+			Node F = null;
+			return F;
+		}
+		lastProduct = Polynomial.reverse(lastProduct);
+		return lastProduct;
+	}
+		
+	/**
+	 * Evaluates a polynomial at a given value.
+	 * 
+	 * @param poly Polynomial (front of linked list) to be evaluated
+	 * @param x Value at which evaluation is to be done
+	 * @return Value of polynomial p at x
+	 */
+	public static float evaluate(Node poly, float x) {
+		Node L = poly;
+		float total = 0;
+		while(L != null) {
+			float y = L.term.coeff;
+			float z = 1;
+			for(int i = 0; i < L.term.degree; i++) {
+				z = z * x;
+			}
+			y = y * z;
+			total = total + y;
+			L = L.next;
+		}
+		return total;
+	}
+	
+	/**
+	 * Returns string representation of a polynomial
+	 * 
+	 * @param poly Polynomial (front of linked list)
+	 * @return String representation, in descending order of degrees
+	 */
+	public static String toString(Node poly) {
+		if (poly == null) {
+			return "0";
+		} 
+		
+		String retval = poly.term.toString();
+		for (Node current = poly.next ; current != null ;
+		current = current.next) {
+			retval = current.term.toString() + " + " + retval;
+		}
+		return retval;
+	}
+	
+	private static Node reverse(Node poly) {
+		Node prev = null;
+		Node current = poly;
+		Node next = null;
+		while(current != null) {
+			next = current.next;
+			current.next = prev;
+			prev = current;
+			current = next;
+		}
+		poly = prev;
+		return poly;
+	}
+	
+	private static float searchCoeff(Node head, int degree) {
+		Node poly = head;
+		float coeff = 0;
+		while(poly != null) {
+			if(poly.term.degree == degree) {
+				coeff = poly.term.coeff;
+				return coeff;
+			}
+			poly = poly.next;
+		}
+		return coeff;
+	}
+	
+	private static boolean search(Node head, int x) {
+		Node current = head;
+		while(current != null) {
+			if(current.term.degree == x) {
+				return true;
+			}
+			current = current.next;
+		}
+		return false;
+	}
+	
+	private static float searchCoeffs(Node head, int degree) {
+		Node current = head;
+		float coeff = 0;
+		while(current != null) {
+			if(current.term.degree == degree) {
+				coeff = coeff + current.term.coeff;
+			}
+			current = current.next;
+		}
+		return coeff;
+	}
+	
+	public static Node merge(Node l1, Node l2) {
+		if(l1 == null) {
+			return l2;
+		}
+		if(l2 == null) {
+			return l1;
+		}
+		if(l1.term.degree == l2.term.degree) {
+			l1.next = merge(l1.next, l2);
+			return l1;
+		}
+		else {
+			l2.next = merge(l1, l2.next);
+			return l2;
+		}
+	}
+	
+	
+}
