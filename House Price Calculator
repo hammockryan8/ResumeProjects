@@ -1,0 +1,222 @@
+/* 
+ * 
+ * This code calculates the house price of a house by learing from
+ * training data. It uses pseudo inverse of a given matrix to find the 
+ * weight of different features.
+ * 
+ * Predicted Price : Y = W0 + W1*x1 + W2*X2 + W3*X3 + W4*X4
+ * Weight Matrix : W = pseudoInv(X)*Y
+ * pseudoInv(X) = inverse(transpose(X)*X) * transpose(X)  
+ * 
+ * weight(w) = pseudoInv(X) * Y
+ * 			where	X = Input data matrix
+ * 					Y = Target vector
+ * 
+ */
+ 
+#include<stdio.h>
+#include<stdlib.h>
+
+// all methods declarations
+void freeRemainingMatrices(double **trainMatrix, double **priceMatrix, double **test, int rows1, int rows2);
+void freeTempMatrices(double **tempMatrix, int rows);
+double** multiplyMatrix(double **matA, double **matB, int r1, int c1, int r2, int c2);
+double** transposeMatrix(double** mat, int row, int col);
+double** inverseMatrix(double **matA, int dimension);
+
+// main method starts here
+int main(int argc, char** argv){
+  FILE* training = fopen(argv[1], "r");
+	if(training == NULL){
+	   printf("error\n"); /*token print error if argument is NULL condition*/
+	   return 0;
+	} 
+	
+  FILE* testing = fopen(argv[2], "r");
+	if(testing == NULL){
+	   printf("error\n"); /*token print error if argument is NULL condition*/
+	   return 0;
+	}	
+	
+	int attributes;
+	int dataEx;
+	int numHouses;
+	fscanf(training, "%d\n", &attributes);
+	fscanf(training, "%d\n", &dataEx);
+	fscanf(testing, "%d\n", &numHouses);
+	double** attributesMatrix = (double **)malloc(dataEx*sizeof(double*));
+	double** prices = (double **)malloc(dataEx*sizeof(double*));
+	double** testMatrix = (double **)malloc(numHouses*sizeof(double*));
+	int modAttributes = attributes + 1;
+	double** transpose;
+	double** secondTranspose;
+	double** firstMultiple;
+	double** inverse;
+	double** secondMultiple;
+	double** coeffs;
+	int i;
+	int j;
+	for(i = 0; i < dataEx; i++){
+	    attributesMatrix[i] = (double *)malloc(modAttributes*sizeof(double));
+	}
+	for(i = 0; i < dataEx; i++){
+	    prices[i] = (double *)malloc(1*sizeof(double));
+	}
+	for(i = 0; i < numHouses; i++){
+	    testMatrix[i] = (double *)malloc(attributes*sizeof(double));	
+	}
+	for(i = 0; i < dataEx; i++){
+	    attributesMatrix[i][0] = 1.0;
+	}
+	for(i = 0; i < dataEx; i++){
+	    for(j = 1; j < modAttributes; j++){
+	      	fscanf(training, "%lf%*[,]", &attributesMatrix[i][j]);
+	    }	
+	    fscanf(training, "%lf", &prices[i][0]);
+	    fscanf(training, "\n");
+	}
+	for(i = 0; i < numHouses; i++){
+	    for(j = 0; j < attributes; j++){
+		      fscanf(testing, "%lf%*[,]", &testMatrix[i][j]);
+	    }	
+	    fscanf(testing, "\n");
+	}
+	fclose(training);
+	fclose(testing);
+	/*start of the equation*/
+	transpose = transposeMatrix(attributesMatrix, dataEx, modAttributes);
+	firstMultiple = multiplyMatrix(transpose, attributesMatrix, modAttributes, dataEx, dataEx, modAttributes);
+	freeTempMatrices(transpose, modAttributes);
+	inverse = inverseMatrix(firstMultiple, modAttributes);
+	freeTempMatrices(firstMultiple, modAttributes);
+	secondTranspose = transposeMatrix(attributesMatrix, dataEx, modAttributes);
+	secondMultiple = multiplyMatrix(secondTranspose, prices, modAttributes , dataEx, dataEx, 1);
+	coeffs = multiplyMatrix(inverse, secondMultiple, modAttributes, modAttributes, modAttributes, 1);
+	/*end of the equation*/
+	freeTempMatrices(secondTranspose, modAttributes);
+	freeTempMatrices(inverse, modAttributes);
+	freeTempMatrices(secondMultiple, modAttributes);
+	for(i = 0; i < numHouses; i++){
+	   double total = 0;
+	   for(j = -1; j < attributes; j++){
+	       if(j == -1){
+	       	  total += coeffs[0][0];
+	       }
+	       else{
+	       	  total +=(coeffs[j + 1][0] * testMatrix[i][j]);
+	       }
+	   }
+	   printf("%0.0lf\n", total);
+	}
+	freeTempMatrices(coeffs, modAttributes);
+	freeRemainingMatrices(attributesMatrix, prices, testMatrix, dataEx, numHouses);
+	return 0;
+}
+
+void freeRemainingMatrices(double **trainMatrix, double **priceMatrix, double **test, int rows1, int rows2){ /*have to free the more consistent matrices that stayed throughout the process*/
+	int i;
+	for(i = 0; i < rows1; i++){
+	    free(trainMatrix[i]);
+	    free(priceMatrix[i]);
+	}
+	for(i = 0; i < rows2; i++){
+	    free(test[i]);
+	}
+	free(trainMatrix);
+	free(priceMatrix);
+	free(test);
+}
+
+void freeTempMatrices(double **tempMatrix, int rows){ /*added a free temp matrix function so I could do the formula in separate parts in main without risking using too much memory at once*/
+	int i;
+	for(i = 0; i < rows; i++){
+	    free(tempMatrix[i]);
+	}
+	free(tempMatrix);
+}
+
+double** multiplyMatrix(double **matA, double **matB, int r1, int c1, int r2, int c2)
+{
+    double** result = malloc(r1*sizeof(double*));
+    int i;
+    for(i = 0; i < r1; i++){
+	      result[i] = (double *)malloc(c2*sizeof(double));
+    }
+    double temp;
+    int j, k;
+    for(i = 0; i < r1; i++){
+	      for(j = 0; j < c2; j++){
+	      temp = 0;
+	          for(k = 0; k < r2; k++){
+		            temp += (matA[i][k] * matB[k][j]);
+	          }
+	      result[i][j] = temp;
+  	    }
+    }
+    return result;
+}
+
+
+double** transposeMatrix(double** mat, int row, int col)
+{
+    double** matTran=malloc(col*sizeof(double*)); 
+    int i;
+    for(i = 0; i < col; i++){
+      	matTran[i] = (double *)malloc(row*sizeof(double));
+    }
+    int j;
+    
+    for(i = 0; i < row; i++){
+	      for(j = 0; j < col; j++){
+	           matTran[j][i] = mat[i][j];
+	      }
+    }
+    return matTran;        
+}
+
+
+double** inverseMatrix(double **matA, int dimension)
+{
+    double** matI=malloc(dimension*sizeof(double*)); 
+    int i;
+    for(i = 0; i < dimension; i++){
+	      matI[i] = (double *)malloc(dimension*sizeof(double));
+    }
+    int j;
+    for(i = 0; i < dimension; i++){
+	      for(j = 0; j < dimension; j++){
+	          if(j == i){
+		           matI[i][j] = 1;
+	           }
+	           else{
+		           matI[i][j] = 0;
+	           }
+	      }
+    }
+    int k, h;
+    for(i = 0; i < dimension; i++){ /*first half of gauss-jordan elimination, makes the identity matrix an upper triangular matrix*/
+	      double precedent = matA[i][i];
+        for(j = 0; j < dimension; j++){
+	          matA[i][j] = (matA[i][j] / precedent);
+	          matI[i][j] = (matI[i][j] / precedent);
+	      }
+	
+	      for(k = i + 1; k < dimension; k++){
+	          double factor = matA[k][i];
+	          for(h = 0; h < dimension; h++){
+		            matA[k][h] = (matA[k][h] - (factor * matA[i][h]));
+		            matI[k][h] = (matI[k][h] - (factor * matI[i][h]));		
+	          }
+	      }
+    }
+    for(i = dimension - 1; i >= 0; i--){/*second half of gauss jordan elimination, makes the matrix from the argument into the identity matrix while turning the existing identity matrix into the inverse of the argument*/
+	      for(j = i - 1; j >= 0; j--){
+	          double precedent = matA[j][i];
+	          for(k = 0; k < dimension; k++){
+	  	          matA[j][k] = (matA[j][k] - (precedent * matA[i][k]));
+		            matI[j][k] = (matI[j][k] - (precedent * matI[i][k]));
+	          }
+	       }
+    }
+    return matI;
+}
