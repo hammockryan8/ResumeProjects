@@ -214,7 +214,7 @@ double** inverseMatrix(double **matA, int dimension)
 	          double precedent = matA[j][i];
 	          for(k = 0; k < dimension; k++){
 	  	          matA[j][k] = (matA[j][k] - (precedent * matA[i][k]));
-		            matI[j][k] = (matI[j][k] - (precedent * matI[i][k]));
+		          matI[j][k] = (matI[j][k] - (precedent * matI[i][k]));
 	          }
 	       }
     }
