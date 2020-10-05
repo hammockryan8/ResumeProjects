@@ -26,13 +26,13 @@ double** inverseMatrix(double **matA, int dimension);
 
 // main method starts here
 int main(int argc, char** argv){
-  FILE* training = fopen(argv[1], "r");
+  	FILE* training = fopen(argv[1], "r");
 	if(training == NULL){
 	   printf("error\n"); /*token print error if argument is NULL condition*/
 	   return 0;
 	} 
 	
-  FILE* testing = fopen(argv[2], "r");
+   	FILE* testing = fopen(argv[2], "r");
 	if(testing == NULL){
 	   printf("error\n"); /*token print error if argument is NULL condition*/
 	   return 0;
@@ -195,7 +195,7 @@ double** inverseMatrix(double **matA, int dimension)
     }
     int k, h;
     for(i = 0; i < dimension; i++){ /*first half of gauss-jordan elimination, makes the identity matrix an upper triangular matrix*/
-	      double precedent = matA[i][i];
+	double precedent = matA[i][i];
         for(j = 0; j < dimension; j++){
 	          matA[i][j] = (matA[i][j] / precedent);
 	          matI[i][j] = (matI[i][j] / precedent);
@@ -208,8 +208,8 @@ double** inverseMatrix(double **matA, int dimension)
 		            matI[k][h] = (matI[k][h] - (factor * matI[i][h]));		
 	          }
 	      }
-    }
-    for(i = dimension - 1; i >= 0; i--){/*second half of gauss jordan elimination, makes the matrix from the argument into the identity matrix while turning the existing identity matrix into the inverse of the argument*/
+         }
+   	 for(i = dimension - 1; i >= 0; i--){/*second half of gauss jordan elimination, makes the matrix from the argument into the identity matrix while turning the existing identity matrix into the inverse of the argument*/
 	      for(j = i - 1; j >= 0; j--){
 	          double precedent = matA[j][i];
 	          for(k = 0; k < dimension; k++){
@@ -217,6 +217,6 @@ double** inverseMatrix(double **matA, int dimension)
 		          matI[j][k] = (matI[j][k] - (precedent * matI[i][k]));
 	          }
 	       }
-    }
+   	 }
     return matI;
 }
