@@ -1,0 +1,564 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int testLength(int input);
+int checkIfName(char* token, char** inputNames, int numInputs);
+int AND(int firstVar, int secondVar);
+int OR(int firstVar, int secondVar);
+int XOR(int firstVar, int secondVar);
+int NAND(int firstVar, int secondVar);
+int NOR(int firstVar, int secondVar);
+int NOT(int var);
+char** clear(char** arrs);
+void freeArrays(int* conven, int* outConven, int* temp, int** test, char** names, char** outNames, int numTest, int inputs, int output);
+void setTable(int** test, int numInputs, int tests);
+void printAnswer(int** table, int** answer, int tests, int inputNum, int outputNum);
+int main(int argc, char* argv[])
+{
+	if(argv[1] == NULL){
+	   printf("error\n");
+	   return 0;
+	}
+	FILE* file = fopen(argv[1], "r");
+	if(file == NULL){
+	   printf("error\n");
+	   return 0;
+	}/*for the last assignment, I went all out and had TWO if argument NULL print error statements*/
+	int i;
+	/*the idea is to have each temp name correlate to an index in an int array for temp values*/
+	int* temps = (int *)malloc(1000*sizeof(int));/*this only works if you dont have a test case where there's more than 1000 temps*/
+	char** tempNames = (char **)malloc(1000*sizeof(char *));
+	for(i = 0; i < 1000; i++){
+	   tempNames[i] = (char *)malloc(20*sizeof(char *));
+	   strcpy(tempNames[i], "secretstringcpy");
+	}
+        int numInput;
+	fscanf(file, "INPUTVAR %d", &numInput);	
+	switch(numInput){
+	     case 0:
+		return 0;
+	     default:
+		break;
+	}
+        int tests = testLength(numInput);
+	char** inputNames = (char **)malloc(numInput*sizeof(char *)); /*same idea as temp just for inputs*/
+	for(i = 0; i < numInput; i++){
+	    inputNames[i] = (char *)malloc(100*sizeof(char));
+	    fscanf(file, " %s", inputNames[i]);
+	}
+	fscanf(file, "\n");
+	int* inputVars = (int *)malloc(numInput*sizeof(int));
+	int** testCases = (int **)malloc(tests*sizeof(int *));
+	for(i = 0; i < tests; i++){
+	    testCases[i] = (int *)malloc(numInput*sizeof(int));
+	}
+	setTable(testCases, numInput, tests);
+	int numOutput;	
+  	fscanf(file, "OUTPUTVAR %d", &numOutput);
+	char** outputNames = (char **)malloc(numOutput*sizeof(char *)); /*same idea as temp just for outputs*/
+	for(i = 0; i < numOutput; i++){
+	    outputNames[i] = (char *)malloc(100*sizeof(char));
+	    fscanf(file, " %s", outputNames[i]);
+	}
+	fclose(file);
+	int* outputVars = (int *)malloc(numInput*sizeof(int));
+	int** answers = (int **)malloc(tests*sizeof(int *));
+	char* token = (char *)malloc(100*sizeof(char));
+	for(i = 0; i < tests; i++){
+	    answers[i] = (int *)malloc(numOutput*sizeof(int));
+	}
+	int j;
+	for(i = 0; i < tests; i++){
+	    FILE* file = fopen(argv[1], "r");
+	    fscanf(file, "%*[^\n]\n");
+	    fscanf(file, "%*[^\n]\n");
+	    for(j = 0; j < numInput; j++){
+		inputVars[j] = testCases[i][j];
+	    }
+	    int tempCount = 0;
+	    while(1){
+	        fscanf(file, "%s", token);
+		char* comp = (char *)malloc(12*sizeof(char));
+		char* moved = (char *)malloc(12*sizeof(char));
+		if(strcmp(token, "AND") == 0){ /*each gate has to account for different scenarios depending on which variable in the line is an input, output, or temp*/
+		   fscanf(file, " %s", token);
+		   fscanf(file, " %s", comp);
+		   fscanf(file, " %s", moved);
+		   if(checkIfName(token, inputNames, numInput) > -1 && checkIfName(comp, inputNames, numInput) > -1){/*so that's why there's a lot of if-else statements*/
+		      int n = AND(inputVars[checkIfName(token, inputNames, numInput)], inputVars[checkIfName(comp, inputNames, numInput)]);
+		      if(checkIfName(moved, outputNames, numOutput) > -1){
+			 outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			 answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+		      }
+		      else{
+			 if(checkIfName(moved, tempNames, 1000) == -1){
+			    strcpy(tempNames[tempCount], moved); /*when detecting a variable not used in any name arrays, it constructs a new one right then and there*/
+			    temps[tempCount] = n;
+			    tempCount++;
+			 }
+		      }
+		   }
+		   else{
+		      if(checkIfName(token, inputNames, numInput) == -1 && checkIfName(comp, inputNames, numInput) == -1){
+			 if(checkIfName(moved, outputNames, numOutput) > -1){
+			    int n = AND(temps[checkIfName(token, tempNames, 1000)], temps[checkIfName(comp, tempNames, 1000)]);
+		            outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+		            answers[i][checkIfName(moved, outputNames, numOutput)] = n; 
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = AND(temps[checkIfName(token, tempNames, 1000)], temps[checkIfName(comp, tempNames, 1000)]);
+			    tempCount++;
+			 }
+		      }
+		      else if(checkIfName(token, inputNames, numInput) == -1){
+			 if(checkIfName(moved, outputNames, numOutput) > -1){
+		            int n = AND(temps[checkIfName(token, tempNames, 1000)], inputVars[checkIfName(comp, inputNames, numInput)]);
+		            outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+		            answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = AND(temps[checkIfName(token, tempNames, 1000)], inputVars[checkIfName(comp, inputNames, numInput)]);
+			    tempCount++;
+			 }
+		      }
+		      else if(checkIfName(comp, inputNames, numInput) == -1){
+		         if(checkIfName(moved, outputNames, numOutput) > -1){
+			    int n = AND(inputVars[checkIfName(token, inputNames, numInput)], temps[checkIfName(comp, tempNames, 1000)]);
+			    outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			    answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = AND(inputVars[checkIfName(token, inputNames, numInput)], temps[checkIfName(comp, tempNames, 1000)]);
+			    tempCount++;
+			 }
+		      }
+		   }
+		}
+		else if(strcmp(token, "OR") == 0){
+		   fscanf(file, " %s", token);
+		   fscanf(file, " %s", comp);
+		   fscanf(file, " %s", moved);
+		   if(checkIfName(token, inputNames, numInput) > -1 && checkIfName(comp, inputNames, numInput) > -1){
+		      int n = OR(inputVars[checkIfName(token, inputNames, numInput)], inputVars[checkIfName(comp, inputNames, numInput)]);
+		      if(checkIfName(moved, outputNames, numOutput) > -1){
+			 outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			 answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+		      }
+		      else{
+			 if(checkIfName(moved, tempNames, 1000) == -1){
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = n;
+			    tempCount++;
+			 }
+		      }
+		   }
+		   else{
+		      if(checkIfName(token, inputNames, numInput) == -1 && checkIfName(comp, inputNames, numInput) == -1){
+			 if(checkIfName(moved, outputNames, numOutput) > -1){
+			    int n = OR(temps[checkIfName(token, tempNames, 1000)], temps[checkIfName(comp, tempNames, 1000)]);
+		            outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+		            answers[i][checkIfName(moved, outputNames, numOutput)] = n; 
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = OR(temps[checkIfName(token, tempNames, 1000)], temps[checkIfName(comp, tempNames, 1000)]);
+			    tempCount++;
+			 }
+		      }
+		      else if(checkIfName(token, inputNames, numInput) == -1){
+			 if(checkIfName(moved, outputNames, numOutput) > -1){
+		            int n = OR(temps[checkIfName(token, tempNames, 1000)], inputVars[checkIfName(comp, inputNames, numInput)]);
+		            outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+		            answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+			 }
+			 else{
+			    
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = OR(temps[checkIfName(token, tempNames, 1000)], inputVars[checkIfName(comp, inputNames, numInput)]);
+			    tempCount++;
+			 }
+		      }
+		      else if(checkIfName(comp, inputNames, numInput) == -1){
+			 if(checkIfName(moved, outputNames, numOutput) > -1){
+			    int n = OR(inputVars[checkIfName(token, inputNames, numInput)], temps[checkIfName(comp, tempNames, 1000)]);
+			    outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			    answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = OR(inputVars[checkIfName(token, inputNames, numInput)], temps[checkIfName(comp, tempNames, 1000)]);
+			    tempCount++;
+			 }
+		      }
+		   }
+		}
+		else if(strcmp(token, "XOR") == 0){
+	           fscanf(file, " %s", token);
+		   fscanf(file, " %s", comp);
+		   fscanf(file, " %s", moved);
+ 		   if(checkIfName(token, inputNames, numInput) > -1 && checkIfName(comp, inputNames, numInput) > -1){
+		      int n = XOR(inputVars[checkIfName(token, inputNames, numInput)], inputVars[checkIfName(comp, inputNames, numInput)]);
+		      if(checkIfName(moved, outputNames, numOutput) > -1){
+			 outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			 answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+		      }
+		      else{
+			 if(checkIfName(moved, tempNames, 1000) == -1){
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = n;
+			    tempCount++;
+			 }
+		      }
+		   }
+		   else{
+		      if(checkIfName(token, inputNames, numInput) == -1 && checkIfName(comp, inputNames, numInput) == -1){
+			 if(checkIfName(moved, outputNames, numOutput) > -1){
+			    int n = XOR(temps[checkIfName(token, tempNames, 1000)], temps[checkIfName(comp, tempNames, 1000)]);
+		            outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+		            answers[i][checkIfName(moved, outputNames, numOutput)] = n; 
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = XOR(temps[checkIfName(token, tempNames, 1000)], temps[checkIfName(comp, tempNames, 1000)]);
+			    tempCount++;
+			 }
+		      }
+		      else if(checkIfName(token, inputNames, numInput) == -1){
+			 if(checkIfName(moved, outputNames, numOutput) > -1){
+		            int n = XOR(temps[checkIfName(token, tempNames, 1000)], inputVars[checkIfName(comp, inputNames, numInput)]);
+		            outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+		            answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = XOR(temps[checkIfName(token, tempNames, 1000)], inputVars[checkIfName(comp, inputNames, numInput)]);
+			    tempCount++;
+			 }
+		      }
+		      else if(checkIfName(comp, inputNames, numInput) == -1){
+			 if(checkIfName(moved, outputNames, numOutput) > -1){
+			    int n = XOR(inputVars[checkIfName(token, inputNames, numInput)], temps[checkIfName(comp, tempNames, 1000)]);
+			    outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			    answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = XOR(inputVars[checkIfName(token, inputNames, numInput)], temps[checkIfName(comp, tempNames, 1000)]);
+			    tempCount++;
+			 }
+		      }
+		   }
+		}
+		else if(strcmp(token, "NAND") == 0){
+		   fscanf(file, " %s", token);
+		   fscanf(file, " %s", comp);
+		   fscanf(file, " %s", moved);
+		   if(checkIfName(token, inputNames, numInput) > -1 && checkIfName(comp, inputNames, numInput) > -1){
+		      if(checkIfName(moved, outputNames, numOutput) > -1){
+		         int n = NAND(inputVars[checkIfName(token, inputNames, numInput)], inputVars[checkIfName(comp, inputNames, numInput)]);
+			 outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			 answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+		      }
+		      else{
+			 if(checkIfName(moved, tempNames, 1000) == -1){
+		            strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = NAND(inputVars[checkIfName(token, inputNames, numInput)], inputVars[checkIfName(comp, inputNames, numInput)]);
+			    tempCount++;
+		         }
+		      }
+		   }
+		   else{
+		      if(checkIfName(token, inputNames, numInput) == -1 && checkIfName(comp, inputNames, numInput) == -1){
+			 if(checkIfName(moved, outputNames, numOutput) > -1){
+			    int n = NAND(temps[checkIfName(token, tempNames, 1000)], temps[checkIfName(comp, tempNames, 1000)]);
+		            outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+		            answers[i][checkIfName(moved, outputNames, numOutput)] = n; 
+			 }
+			 else{
+			   strcpy(tempNames[tempCount], moved);
+			   temps[tempCount] = NAND(temps[checkIfName(token, tempNames, 1000)], temps[checkIfName(comp, tempNames, 1000)]);
+			   tempCount++;
+		         }
+		      }
+		      else if(checkIfName(token, inputNames, numInput) == -1){
+			int n = NAND(temps[checkIfName(token, tempNames, 1000)], inputVars[checkIfName(comp, inputNames, numInput)]);
+			if(checkIfName(moved, outputNames, numOutput) > -1){
+		            int n = NAND(temps[checkIfName(token, tempNames, 1000)], inputVars[checkIfName(comp, inputNames, numInput)]);
+		            outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+		            answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = n;
+			    tempCount++;
+			 }
+		      }
+		      else if(checkIfName(comp, inputNames, numInput) == -1){
+			if(checkIfName(moved, outputNames, numOutput) > -1){
+			    int n = NAND(inputVars[checkIfName(token, inputNames, numInput)], temps[checkIfName(comp, tempNames, 1000)]);
+			    outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			    answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = NAND(inputVars[checkIfName(token, inputNames, numInput)], temps[checkIfName(comp, tempNames, 1000)]);
+			    tempCount++;
+			 }
+		      }
+		   }
+		}
+		else if(strcmp(token, "NOR") == 0){
+		   fscanf(file, " %s", token);
+		   fscanf(file, " %s", comp);
+		   fscanf(file, " %s", moved);
+		   if(checkIfName(token, inputNames, numInput) > -1 && checkIfName(comp, inputNames, numInput) > -1){
+		      if(checkIfName(moved, outputNames, numOutput) > -1){
+		         int n = NOR(inputVars[checkIfName(token, inputNames, numInput)], inputVars[checkIfName(comp, inputNames, numInput)]);
+			 outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			 answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+		      }
+		      else{
+			 if(checkIfName(moved, tempNames, 1000) == -1){
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = NOR(inputVars[checkIfName(token, inputNames, numInput)], inputVars[checkIfName(comp, inputNames, numInput)]);
+			    tempCount++;
+			 }
+		      }
+		   }
+		   else{
+		      if(checkIfName(token, inputNames, numInput) == -1 && checkIfName(comp, inputNames, numInput) == -1){
+		        if(checkIfName(moved, outputNames, numOutput) > -1){
+			    int n = NOR(temps[checkIfName(token, tempNames, 1000)], temps[checkIfName(comp, tempNames, 1000)]);
+		            outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+		            answers[i][checkIfName(moved, outputNames, numOutput)] = n; 
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = NOR(temps[checkIfName(token, tempNames, 1000)], temps[checkIfName(comp, tempNames, 1000)]);
+			    tempCount++;
+			 }
+		      }
+		      else if(checkIfName(token, inputNames, numInput) == -1){
+			 if(checkIfName(moved, outputNames, numOutput) > -1){
+		            int n = NOR(temps[checkIfName(token, tempNames, 1000)], inputVars[checkIfName(comp, inputNames, numInput)]);
+		            outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+		            answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = NOR(temps[checkIfName(token, tempNames, 1000)], inputVars[checkIfName(comp, inputNames, numInput)]);
+			    tempCount++;
+			 }
+		      }
+		      else if(checkIfName(comp, inputNames, numInput) == -1){
+		         if(checkIfName(moved, outputNames, numOutput) > -1){
+			    int n = NOR(inputVars[checkIfName(token, inputNames, numInput)], temps[checkIfName(comp, tempNames, 1000)]);
+			    outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			    answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = NOR(inputVars[checkIfName(token, inputNames, numInput)], temps[checkIfName(comp, tempNames, 1000)]);
+			    tempCount++;
+			 }
+		      }
+		   }
+		}
+		else if(strcmp(token, "NOT") == 0){ /*NOT had to be made a little differently, only one input so its shorter than the other gates*/
+		   fscanf(file, " %s", token);
+		   fscanf(file, " %s", moved);
+		   if(checkIfName(token, inputNames, numInput) > -1){
+		      int n = NOT(inputVars[checkIfName(token, inputNames, numInput)]);
+		      if(checkIfName(moved, outputNames, numOutput) > -1){
+			 outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			 answers[i][checkIfName(moved, outputNames, numOutput)] = n;
+		      }
+		      else{
+			 if(checkIfName(token, tempNames, 1000) > -1){
+			    temps[checkIfName(token, tempNames, 1000)] = n;
+			 }
+			 else{
+			    strcpy(tempNames[tempCount], moved);
+			    temps[tempCount] = n;
+			    tempCount++;
+			 }
+		      }
+		   }
+		   else{
+		      if(checkIfName(token, tempNames, 1000) > -1){
+			if(checkIfName(moved, outputNames, numOutput) > -1){
+			   int n = NOT(temps[checkIfName(token, tempNames, 1000)]);
+			   outputVars[checkIfName(moved, outputNames, numOutput)] = n;
+			   answers[i][checkIfName(moved, outputNames, numOutput)] = n;	
+			}
+			else{
+			   if(checkIfName(moved, tempNames, 1000) > -1){
+			      int n = NOT(temps[checkIfName(token, tempNames, 1000)]);
+			      temps[checkIfName(moved, tempNames, 1000)] = n;
+			   }
+			   else{
+			      strcpy(tempNames[tempCount], moved);
+			      temps[tempCount] = NOT(temps[checkIfName(token, tempNames, 1000)]);
+			      tempCount++;
+			   }
+			}
+		      }
+		      else{
+			printf("Error: variable has not been set before\n");
+			break;
+		      }
+		   }
+		}
+		else{
+		   fclose(file);
+		   free(comp);
+		   free(moved);
+		   break;
+		}
+		free(comp);
+		free(moved);
+	    }
+	    tempNames = clear(tempNames); 
+	}
+	printAnswer(testCases, answers, tests, numInput, numOutput);
+	freeArrays(inputVars, outputVars, temps, testCases, inputNames, outputNames, tests, numInput, numOutput);
+	free(token);
+	for(i = 0; i < 1000; i++){
+	    free(tempNames[i]);
+	}
+	free(tempNames);
+	for(i = 0; i < tests; i++){
+	    free(answers[i]);
+	}
+	free(answers);
+	return 0;
+}
+
+int testLength(int input){
+	int length;
+	length = 1 << input;
+	return length;
+}
+
+int checkIfName(char* token, char** inputNames, int numInputs){
+	int i;
+	for(i = 0; i < numInputs; i++){
+	    if(strcmp(token, inputNames[i]) == 0){
+		return i;
+	    }
+	}
+	return -1;
+}
+
+int AND(int firstVar, int secondVar){
+	if(firstVar == 1 && secondVar == 1){
+	   return 1;
+	}
+	return 0;
+}
+
+int OR(int firstVar, int secondVar){
+	if(firstVar == 1 || secondVar == 1){
+	   return 1;
+	}
+	return 0;
+}
+
+int XOR(int firstVar, int secondVar){
+	if((firstVar == 1 && secondVar == 0) || (firstVar == 0 && secondVar == 1)){
+	    return 1;
+	}
+	return 0;
+}
+
+int NAND(int firstVar, int secondVar){
+	if(firstVar == 1 && secondVar == 1){
+	   return 0;
+	}
+	return 1;
+}
+
+int NOR(int firstVar, int secondVar){
+       if(firstVar == 0 && secondVar == 0){
+	  return 1;
+       }
+       return 0;
+}
+
+int NOT(int var){
+       switch(var){
+	   case 0:
+		return 1;
+	   default:
+		return 0;
+       }
+}
+
+char** clear(char** arrs){
+	int i;
+	for(i = 0; i < 1000; i++){
+	    strcpy(arrs[i], "whataretheoddsyouregonnanameatempthis"); /*top sneaky string mathematically guaranteed that graders won't use as a name of a temporary variable in test cases*/
+	}
+	return arrs;
+}
+
+void freeArrays(int* conven, int* outConven, int* temp, int** test, char** names, char** outNames, int numTest, int inputs, int output){
+	int i;
+	free(conven);
+	free(outConven);
+	free(temp);
+	for(i = 0; i < numTest; i++){
+	    free(test[i]);
+	}
+	free(test);
+	for(i = 0; i < inputs; i++){
+	    free(names[i]);	
+	}
+	free(names);
+	for(i = 0; i < output; i++){	
+	    free(outNames[i]);
+	}
+	free(outNames);
+}
+
+void setTable(int** test, int numInputs, int tests){
+	int i;
+	int j;
+	int x;
+	int compar = 1;
+	int check;
+	for(i = 0; i < tests; i++){
+	    x = i;
+	    for(j = numInputs - 1; j >= 0; j--){
+	       check = x&compar; /*shifting to have each digit in the line of the truth table iteratively count in binary*/
+	       switch(check){
+		    case 0:
+			test[i][j] = 0;
+			break;
+		    default:
+			test[i][j] = 1;
+			break;
+	       }
+	       compar = compar << 1;
+	    }
+	    compar = 1;
+	}
+}
+
+void printAnswer(int** table, int** answer, int tests, int inputNum, int outputNum){
+	int i;
+	int j;
+	for(i = 0; i < tests; i++){
+	    for(j = 0; j < inputNum; j++){
+		printf("%d ", table[i][j]);
+	    }
+	    for(j = 0; j < outputNum; j++){
+		printf("%d ", answer[i][j]);
+	    }
+	    printf("\n");
+
+	}
+}
