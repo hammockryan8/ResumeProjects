@@ -13,10 +13,10 @@
             android:name=".GameList"
             android:exported="false" />
         <activity
-            android:name=".WatchGame"
+            android:name=".ActualGame"
             android:exported="false" />
         <activity
-            android:name=".ActualGame"
+            android:name=".WatchGame"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

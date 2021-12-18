@@ -4,25 +4,35 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/drawable/ic_launcher_background.xml" value="0.13177083333333334" />
-        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/activity_actual_game.xml" value="0.2" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/activity_actual_game.xml" value="0.264" />
         <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/activity_chess50.xml" value="0.1265625" />
         <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/activity_chess_game.xml" value="0.15520833333333334" />
         <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/black_wins.xml" value="0.2" />
-        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/draw_accept.xml" value="0.264" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/black_wins.xml" value="0.536" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/draw_accept.xml" value="0.4" />
         <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/draw_sceen.xml" value="0.4" />
-        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/draw_screen.xml" value="0.4" />
         <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/game_over_resign.xml" value="0.536" />
-        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/games_list.xml" value="0.264" />
         <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/pawn_promotion.xml" value="0.136" />
         <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/popup_draw.xml" value="0.13177083333333334" />
-        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/promotion.xml" value="0.264" />
-        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/recorded_games.xml" value="0.264" />
-        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/save_game.xml" value="0.2" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/promotion.xml" value="0.536" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/recorded_games.xml" value="0.2" />
         <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/slideshow.xml" value="0.1" />
         <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/watch_game.xml" value="0.264" />
-        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/white_wins.xml" value="0.264" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/layout/white_wins.xml" value="0.176" />
         <entry key="..\:/Users/18503/AndroidStudioProjects/AndroidChess/app/src/main/res/menu/popup_menu.xml" value="0.13177083333333334" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/activity_actual_game.xml" value="0.1" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/black_wins.xml" value="0.2" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/draw_accept.xml" value="0.2" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/draw_screen.xml" value="0.176" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/games_list.xml" value="0.2" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/popup_draw.xml" value="0.176" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/promotion.xml" value="0.13177083333333334" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/recorded_games.xml" value="0.13177083333333334" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/save_game.xml" value="0.264" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/textview.xml" value="0.13229166666666667" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/watch_game.xml" value="0.2" />
+        <entry key="..\:/Users/18503/AndroidStudioProjects/androidchess50/app/src/main/res/layout/white_wins.xml" value="0.4" />
       </map>
     </option>
   </component>
