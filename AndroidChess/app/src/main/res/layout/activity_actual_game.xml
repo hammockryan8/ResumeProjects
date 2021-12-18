@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/undo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActualGame">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:weightSum="8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.295">
+
+        <LinearLayout
+
+            android:id="@+id/fileA"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:orientation="vertical"
+            android:weightSum="8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/A8"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackrook_resize" />
+
+            <ImageButton
+                android:id="@+id/A7"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackpawn_resize" />
+
+            <ImageButton
+                android:id="@+id/A6"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/A5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/A4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/A3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/A2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whitepawn_resize" />
+
+            <ImageButton
+                android:id="@+id/A1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whiterook_resize" />/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fileB"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:orientation="vertical"
+            android:weightSum="8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fileA"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/B8"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackknight_resize" />
+
+            <ImageButton
+                android:id="@+id/B7"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackpawn_resize" />
+
+
+            <ImageButton
+                android:id="@+id/B6"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/B5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/B4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/B3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/B2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whitepawn_resize" />
+
+            <ImageButton
+                android:id="@+id/B1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whiteknight_resize" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fileC"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:orientation="vertical"
+            android:weightSum="8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fileB"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/C8"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackbishop_resize" />
+
+            <ImageButton
+                android:id="@+id/C7"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackpawn_resize" />
+
+
+            <ImageButton
+                android:id="@+id/C6"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/C5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/C4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/C3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/C2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whitepawn_resize" />
+
+            <ImageButton
+                android:id="@+id/C1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whitebishop_resize" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fileD"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:orientation="vertical"
+            android:weightSum="8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fileC"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/D8"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackqueen_resize" />
+
+            <ImageButton
+                android:id="@+id/D7"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackpawn_resize" />
+
+
+            <ImageButton
+                android:id="@+id/D6"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/D5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/D4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/D3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/D2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whitepawn_resize" />
+
+            <ImageButton
+                android:id="@+id/D1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whitequeen_resize" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fileE"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:orientation="vertical"
+            android:weightSum="8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fileD"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/E8"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackking_resize" />
+
+
+            <ImageButton
+                android:id="@+id/E7"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackpawn_resize" />
+
+
+            <ImageButton
+                android:id="@+id/E6"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/E5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/E4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/E3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/E2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whitepawn_resize" />
+
+            <ImageButton
+                android:id="@+id/E1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whiteking_resize" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fileF"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:orientation="vertical"
+            android:weightSum="8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fileE"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/F8"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackbishop_resize" />
+
+            <ImageButton
+                android:id="@+id/F7"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackpawn_resize" />
+
+
+            <ImageButton
+                android:id="@+id/F6"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/F5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/F4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/F3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/F2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whitepawn_resize" />
+
+            <ImageButton
+                android:id="@+id/F1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whitebishop_resize" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fileG"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:orientation="vertical"
+            android:weightSum="8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fileF"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/G8"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackknight_resize" />
+
+            <ImageButton
+                android:id="@+id/G7"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackpawn_resize" />
+
+
+            <ImageButton
+                android:id="@+id/G6"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/G5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/G4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/G3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/G2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whitepawn_resize" />
+
+            <ImageButton
+                android:id="@+id/G1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whiteknight_resize" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fileH"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:orientation="vertical"
+            android:weightSum="8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fileG"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/H8"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackrook_resize" />
+
+            <ImageButton
+                android:id="@+id/H7"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/blackpawn_resize" />
+
+
+            <ImageButton
+                android:id="@+id/H6"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/H5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/H4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/H3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame" />
+
+            <ImageButton
+                android:id="@+id/H2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/purpleSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whitepawn_resize" />
+
+            <ImageButton
+                android:id="@+id/H1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/whiteSquare"
+                android:onClick="playOfTheGame"
+                android:src="@drawable/whiterook_resize" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="57dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="228dp"
+        android:layout_marginEnd="163dp"
+        android:layout_marginBottom="127dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintVertical_bias="0.0">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/but"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="19dp"
+        android:text="Undo"
+        android:onClick="undo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <Button
+        android:id="@+id/aiBtn"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="19dp"
+        android:text="AI"
+        android:onClick="doAIThing"
+        app:layout_constraintStart_toEndOf="@+id/but"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="19dp"
+        android:text="Draw"
+        android:onClick="drawTheDrawScreen"
+        app:layout_constraintStart_toEndOf="@+id/aiBtn"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <Button
+        android:id="@+id/resignBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="19dp"
+        android:text="Resign"
+        android:onClick="resign"
+        app:layout_constraintStart_toEndOf="@+id/button3"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="149dp"
+        android:layout_marginEnd="131dp"
+        android:layout_marginBottom="12dp"
+        android:text="Let's Play Chess!"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

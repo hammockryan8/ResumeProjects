@@ -1,0 +1,3 @@
+Ryan Hammock: rh676
+Lorenzo Ladao: lml253
+The testing strategies were split up into two phases, focusing first on the collection phase and then the analysis phase. The collection phase testing started out with giving the program more and more directories with more complicated directory trees to work with as well as more and more directory and file threads it had to work with. Same idea with the analysis part, except we kind of understood that our JSD method was working when two files that were exactly the same resulted in 0.00000 and two files with nothing in common resulted in a 1.00000

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AndroidChess</string>
+    <string name="titleAuthor">Chess by Ryan Hammock</string>
+</resources>
