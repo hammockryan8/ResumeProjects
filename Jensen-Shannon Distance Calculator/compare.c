@@ -456,4 +456,3 @@ void *avg_freq(void* args){
   
   return 0;
 }
-//we're sorry
